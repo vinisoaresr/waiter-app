@@ -18,6 +18,16 @@ export function OrderModal({ isOpen, order, callback }: OrderModalProps) {
     return null;
   }
 
+  function cancelOrder() {
+    fetch(`http://192.168.1.7:3001/orders/${order?._id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      callback();
+    }
+    );
+  }
+
+
   const total = order?.products.reduce((total, { product, quantity }) => {
     return total += product.price * quantity;
   }, 0);
@@ -54,7 +64,7 @@ export function OrderModal({ isOpen, order, callback }: OrderModalProps) {
                 {order?.products.map(({ _id, product, quantity }) => (
                   <div className='item' key={_id}>
                     <img
-                      src={`http://localhost:3001/uploads/${product.imagePath}`}
+                      src={`http://192.168.1.7:3001/uploads/${product.imagePath}`}
                       alt={product.name}
                       width='56'
                       height='28.51'
@@ -76,10 +86,10 @@ export function OrderModal({ isOpen, order, callback }: OrderModalProps) {
               <Button
                 text='Fechar pedido'
                 label='✅'
-                callback={() => { console.log('callback button'); }}
+                callback={callback}
                 disabled={order?.status == 'DONE'}
               />
-              <button className='secundary' onClick={callback}>
+              <button className='secundary' onClick={cancelOrder}>
                 Cancelar pedido
               </button>
             </Actions>

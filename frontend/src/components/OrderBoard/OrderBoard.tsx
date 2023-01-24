@@ -7,10 +7,11 @@ export interface OrderBoardProps {
   icon: string;
   title: string;
   orders: Order[];
+  refreshOrders: (needRefresh: boolean) => void;
 }
 
 
-export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
+export function OrderBoard({ icon, title, orders, refreshOrders }: OrderBoardProps) {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,6 +36,7 @@ export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
   function handleCloseModal() {
     setIsModalOpen(false);
     setSelectedOrder(null);
+    refreshOrders(true);
   }
 
   return (
