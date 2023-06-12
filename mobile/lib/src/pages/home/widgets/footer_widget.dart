@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:waiter_app/src/providers/order_context.dart';
-import 'package:waiter_app/src/shared/app_colors.dart';
-import 'package:waiter_app/src/shared/app_text_styles.dart';
-import 'package:waiter_app/src/widgets/button.dart';
-import 'package:waiter_app/src/widgets/confirm_modal_widget.dart';
+
+import '../../../providers/order_context.dart';
+import '../../../shared/app_colors.dart';
+import '../../../shared/app_text_styles.dart';
+import '../../../widgets/button.dart';
+import '../../../widgets/confirm_modal_widget.dart';
 
 enum FooterType { waiting, withoutOrder, withOrder }
 
 class Footer extends StatelessWidget {
-  const Footer({super.key, required this.callback, required this.type});
-
-  final Function(int value) callback;
-  final FooterType type;
+  final FooterType currentFooter;
+  const Footer({super.key, required this.currentFooter});
 
   @override
   Widget build(BuildContext context) {
-    return type == FooterType.waiting
-        ? waitingFooter(context, callback)
-        : type == FooterType.withOrder
-            ? withOrderFooter(context, callback)
-            : withoutOrderFooter(context, callback);
+    return currentFooter == FooterType.waiting
+        ? waitingFooter(context)
+        : currentFooter == FooterType.withOrder
+            ? withOrderFooter(context)
+            : withoutOrderFooter(context);
   }
 
-  Widget waitingFooter(BuildContext context, Function(int value) callback) {
+  Widget waitingFooter(BuildContext context) {
     return Container(
       height: 76,
       margin: const EdgeInsets.only(bottom: 24),
@@ -33,23 +32,24 @@ class Footer extends StatelessWidget {
         child: Button(
           text: 'Novo Pedido',
           callback: () {
-            showSimpleModalDialog(context, callback);
+            showSimpleModalDialog(context);
           },
         ),
       ),
     );
   }
 
-  Widget withOrderFooter(BuildContext context, Function(int value) callback) {
+  Widget withOrderFooter(BuildContext context) {
+    final state = OrderProvider.of(context);
+    final products = state.getProducts;
+    final total = products.fold<double>(
+        0, (previousValue, element) => previousValue + element.price);
     final intl = NumberFormat.currency(
       locale: 'pt_BR',
       symbol: 'R\$',
       decimalDigits: 2,
     );
-    double total = 0;
-    OrderProvider.of(context).products.forEach((element) {
-      total += element.price;
-    });
+
     return Container(
       height: 176,
       width: double.infinity,
@@ -60,7 +60,7 @@ class Footer extends StatelessWidget {
           SizedBox(
             height: 62,
             child: ListView.builder(
-              itemCount: OrderProvider.of(context).products.length,
+              itemCount: state.getProducts.length,
               itemBuilder: ((context, index) {
                 return Container(
                   height: 62,
@@ -82,12 +82,12 @@ class Footer extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Image.asset(
-                                'assets/images/${OrderProvider.of(context).products[index].imagePath}',
+                                'assets/images/${state.getProducts[index].imagePath}',
                                 fit: BoxFit.cover,
                               ),
                             ),
                             Text(
-                              '${OrderProvider.of(context).products[index].quantity.toString()}x',
+                              '${state.getProducts[index].quantity.toString()}x',
                               style: AppTextStyles.body2,
                             ),
                             Container(
@@ -98,16 +98,11 @@ class Footer extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    OrderProvider.of(context)
-                                        .products[index]
-                                        .name
-                                        .toString(),
+                                    state.getProducts[index].name.toString(),
                                     style: AppTextStyles.body2,
                                   ),
                                   Text(
-                                    intl.format(OrderProvider.of(context)
-                                        .products[index]
-                                        .price),
+                                    intl.format(state.getProducts[index].price),
                                     style: AppTextStyles.h6,
                                   ),
                                 ],
@@ -124,8 +119,7 @@ class Footer extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                OrderProvider.of(context).state.addProduct(
-                                    OrderProvider.of(context).products[index]);
+                                state.addProduct(state.getProducts[index]);
                               },
                               child: const Icon(
                                 Icons.add_circle_outline,
@@ -135,8 +129,7 @@ class Footer extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                OrderProvider.of(context).state.removeProduct(
-                                    OrderProvider.of(context).products[index]);
+                                state.removeProduct(state.getProducts[index]);
                               },
                               child: const Icon(
                                 Icons.remove_circle_outline,
@@ -189,8 +182,7 @@ class Footer extends StatelessWidget {
     );
   }
 
-  Widget withoutOrderFooter(
-      BuildContext context, Function(int value) callback) {
+  Widget withoutOrderFooter(BuildContext context) {
     return Container(
       height: 114,
       width: double.infinity,
@@ -214,7 +206,7 @@ class Footer extends StatelessWidget {
               disabled: true,
               text: 'Confirmar pedido',
               callback: () {
-                showSimpleModalDialog(context, callback);
+                showSimpleModalDialog(context);
               },
             ),
           ),

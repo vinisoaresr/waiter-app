@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:waiter_app/src/providers/order_context.dart';
 import 'package:waiter_app/src/shared/app_colors.dart';
 import 'package:waiter_app/src/shared/app_text_styles.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key, required this.tableNumber, required this.callback});
-
   final int tableNumber;
-  final Function(int) callback;
+
+  const Header({super.key, required this.tableNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +15,7 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: tableNumber > 0
-            ? withOrderHeader(callback, context)
-            : defaultHeader(),
+        children: tableNumber > 0 ? withOrderHeader(context) : defaultHeader(),
       ),
     );
   }
@@ -45,9 +41,12 @@ class Header extends StatelessWidget {
     ];
   }
 
-  List<Widget> withOrderHeader(Function(int) callback, BuildContext context) {
+  List<Widget> withOrderHeader(BuildContext context) {
+    final state = OrderProvider.of(context);
+    final tableValueNotifier = state.tableNumber;
+
     return [
-      Container(
+      SizedBox(
         height: 24,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,8 +58,8 @@ class Header extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 // delete all order items
-                OrderProvider.of(context).products.clear();
-                callback(0);
+                OrderProvider.of(context).getProducts.clear();
+                tableValueNotifier.value = 0;
               },
               child: const Text(
                 "cancelar pedido",
@@ -83,7 +82,7 @@ class Header extends StatelessWidget {
             ),
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Text(
-          'Mesa ${tableNumber.toString()}',
+          'Mesa ${tableValueNotifier.value}',
           style: AppTextStyles.body2,
         ),
       )

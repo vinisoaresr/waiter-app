@@ -16,6 +16,8 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = OrderProvider.of(context);
+
     return Expanded(
       child: Container(
         margin: const EdgeInsets.only(top: 33.0),
@@ -77,9 +79,7 @@ class MenuWidget extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        OrderProvider.of(context)
-                                            .state
-                                            .addProduct(products[index]);
+                                        state.addProduct(products[index]);
                                       },
                                       child: const Icon(
                                         Icons.add_circle_outline,

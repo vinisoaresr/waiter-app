@@ -1,6 +1,7 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+
 import 'package:waiter_app/src/models/mock.dart';
 import 'package:waiter_app/src/pages/home/widgets/categories_widget.dart';
 import 'package:waiter_app/src/pages/home/widgets/footer_widget.dart';
@@ -17,41 +18,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int tableNumber = 0;
-  FooterType type = FooterType.waiting;
-
-  setTableNumber(int value) {
-    setState(() {
-      tableNumber = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    tableNumber == 0
-        ? type = FooterType.waiting
-        : (tableNumber > 0 && OrderProvider.of(context).products.isNotEmpty)
-            ? type = FooterType.withOrder
-            : type = FooterType.withoutOrder;
-
-    final double height;
-    Platform.isAndroid
-        ? height = MediaQuery.of(context).viewPadding.top
-        : height = 0.0;
+    final state = OrderProvider.of(context);
+    final tableNumber = state.tableNumber;
+    final currentFooter = state.currentFooter;
+    log('build called on home_page.dart');
 
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.only(top: height),
           color: AppColors.bg_4,
-          height: double.infinity,
-          width: double.infinity,
           child: Column(
             children: [
-              Header(tableNumber: tableNumber, callback: setTableNumber),
+              Header(tableNumber: tableNumber.value),
               CategoriesWidget(categories: Mock.categories),
               MenuWidget(products: Mock.products),
-              Footer(callback: setTableNumber, type: type),
+              Footer(currentFooter: currentFooter.value),
             ],
           ),
         ),

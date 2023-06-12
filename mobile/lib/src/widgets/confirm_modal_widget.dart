@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:waiter_app/src/shared/app_colors.dart';
 import 'package:waiter_app/src/widgets/button.dart';
 
-showSimpleModalDialog(BuildContext context, Function(int) callback) {
+import '../providers/order_context.dart';
+
+showSimpleModalDialog(BuildContext context) {
+  final state = OrderProvider.of(context);
+  final tableValueNotifier = state.tableNumber;
   final TextEditingController value = TextEditingController();
 
   showDialog(
@@ -43,6 +48,16 @@ showSimpleModalDialog(BuildContext context, Function(int) callback) {
                     autofocus: true,
                     decoration: const InputDecoration(
                       hintText: 'Número da mesa',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.bg_4,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.bg_4,
+                        ),
+                      ),
                     ),
                     showCursor: false,
                     maxLength: 99,
@@ -54,7 +69,8 @@ showSimpleModalDialog(BuildContext context, Function(int) callback) {
                   child: Button(
                     text: 'Salvar',
                     callback: () {
-                      callback(int.parse(value.text));
+                      tableValueNotifier.value = int.parse(value.text);
+
                       Navigator.pop(context);
                     },
                   ),

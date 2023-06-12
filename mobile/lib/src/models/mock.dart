@@ -62,6 +62,14 @@ class Mock {
       imagePath: 'coca-cola.png',
       price: 7,
       ingredients: [],
+    ),
+    Product(
+      id: "3",
+      name: 'Brigadeiro',
+      description: 'Brigadeiro de caneca ',
+      imagePath: 'coca-cola.png',
+      price: 7.99,
+      ingredients: [],
     )
   ];
 }

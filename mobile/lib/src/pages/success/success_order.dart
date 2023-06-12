@@ -14,6 +14,9 @@ class SuccessOrder extends StatefulWidget {
 class _SuccessOrderState extends State<SuccessOrder> {
   @override
   Widget build(BuildContext context) {
+    final state = OrderProvider.of(context);
+    final products = state.products;
+
     return Scaffold(
       backgroundColor: AppColors.red,
       body: Center(
@@ -37,9 +40,7 @@ class _SuccessOrderState extends State<SuccessOrder> {
               ),
               GestureDetector(
                 onTap: () {
-                  // call endpoint /order to send order, method post with body {order: products} and return a json with order id
-                  // then() =>,,,
-                  OrderProvider.of(context).products.clear();
+                  products.clear();
                   Navigator.pushNamed(context, '/home');
                 },
                 child: Container(

@@ -1,76 +1,99 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:waiter_app/src/models/product.dart';
+import 'package:waiter_app/src/pages/home/widgets/footer_widget.dart';
 
-class OrderContext extends StatefulWidget {
-  final Widget child;
+class OrderState extends InheritedWidget {
+  const OrderState({
+    super.key,
+    required this.tableNumber,
+    required this.currentFooter,
+    required this.products,
+    required super.child,
+  });
 
-  const OrderContext({required this.child, super.key});
+  final ValueNotifier<int> tableNumber;
+  final ValueNotifier<FooterType> currentFooter;
+  final List<Product> products;
 
-  @override
-  State<OrderContext> createState() => _OrderContextState();
-}
-
-class _OrderContextState extends State<OrderContext> {
-  final List<Product> _products = [];
-
-  getProducts() => _products;
+  get getCurrentFooter => currentFooter;
+  List<Product> get getProducts => products;
 
   addProduct(product) {
-    if (_products.contains(product)) {
-      final index = _products.indexOf(product);
-      setState(() {
-        _products[index].quantity += 1;
-      });
+    currentFooter.value = FooterType.withOrder;
+
+    if (products.contains(product)) {
+      final index = products.indexOf(product);
+
+      products[index].quantity += 1;
     } else {
-      setState(() {
-        _products.add(product);
-      });
+      products.add(product);
     }
   }
 
   removeProduct(product) {
-    if (_products.contains(product)) {
-      final index = _products.indexOf(product);
-      setState(() {
-        // check if the product has more than one quantity to remove else remove the product
-        if (_products[index].quantity > 1) {
-          _products[index].quantity -= 1;
-        } else {
-          _products.removeAt(index);
-        }
-      });
+    if (products.contains(product)) {
+      final index = products.indexOf(product);
+
+      // check if the product has more than one quantity to remove, else remove the product
+      if (products[index].quantity > 1) {
+        products[index].quantity -= 1;
+      } else {
+        products.removeAt(index);
+        currentFooter.value;
+      }
     } else {
-      setState(() {
-        _products.remove(product);
-      });
+      products.remove(product);
+      currentFooter.value = FooterType.withoutOrder;
     }
   }
 
+  static OrderState of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<OrderState>()!;
+
   @override
-  Widget build(BuildContext context) {
-    return OrderProvider(
-      child: widget.child,
-      state: this,
-      products: _products,
-    );
+  bool updateShouldNotify(OrderState oldWidget) => true;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+    return 'OrderState:\n ${getCurrentFooter.value}\n products ${getProducts.length}\n tableNumber ${tableNumber.value}';
   }
 }
 
-class OrderProvider extends InheritedWidget {
-  const OrderProvider({
-    super.key,
-    required super.child,
-    required this.products,
-    required this.state,
-  });
+class OrderProvider extends StatefulWidget {
+  const OrderProvider({super.key, required this.child});
 
-  final _OrderContextState state;
-  final List<Product> products;
-
-  static OrderProvider of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<OrderProvider>()!;
+  final Widget Function(BuildContext context, OrderState orderState) child;
 
   @override
-  bool updateShouldNotify(OrderProvider oldWidget) => true;
-  // products != oldWidget.products;
+  State<OrderProvider> createState() => _OrderProviderState();
+}
+
+class _OrderProviderState extends State<OrderProvider> {
+  final tableNumber = ValueNotifier<int>(0);
+
+  final currentFooter = ValueNotifier<FooterType>(FooterType.waiting);
+
+  final List<Product> products = [];
+
+  @override
+  Widget build(BuildContext context) {
+    tableNumber.addListener(() {
+      setState(() {});
+      log('tableNumber changed to ${tableNumber.value}');
+    });
+
+    currentFooter.addListener(() {
+      setState(() {});
+      log('currentFooter changed to ${currentFooter.value}');
+    });
+
+    return OrderState(
+      tableNumber: tableNumber,
+      currentFooter: currentFooter,
+      products: products,
+      child: widget.child,
+    );
+  }
 }
