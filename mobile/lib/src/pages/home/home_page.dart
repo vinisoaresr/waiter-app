@@ -8,7 +8,6 @@ import 'package:waiter_app/src/pages/home/widgets/footer_widget.dart';
 import 'package:waiter_app/src/pages/home/widgets/header_widget.dart';
 import 'package:waiter_app/src/pages/home/widgets/menu_widget.dart';
 import 'package:waiter_app/src/providers/order_context.dart';
-import 'package:waiter_app/src/shared/app_colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: AppColors.bg_4,
+          color: Theme.of(context).colorScheme.surfaceTint,
           child: Column(
             children: [
               Header(tableNumber: tableNumber.value),

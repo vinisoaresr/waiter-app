@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:waiter_app/src/shared/app_colors.dart';
 
 class AppTextStyles {
   // Display
@@ -83,14 +82,12 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w400,
     height: 1.2,
-    color: AppColors.bg_4,
   );
 
   static const TextStyle labelMedium = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     height: 1.2,
-    color: AppColors.bg_1,
   );
 
   static const TextStyle labelSmall = TextStyle(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waiter_app/src/providers/order_context.dart';
 
-import 'package:waiter_app/src/shared/app_colors.dart';
-
 class SuccessOrder extends StatefulWidget {
   const SuccessOrder({super.key});
 
@@ -17,17 +15,17 @@ class _SuccessOrderState extends State<SuccessOrder> {
     final products = state.products;
 
     return Scaffold(
-      backgroundColor: AppColors.red,
+      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: SizedBox(
           height: 150,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Icon(
+              Icon(
                 Icons.check_circle_outline,
                 size: 20,
-                color: AppColors.bg_4,
+                color: Theme.of(context).colorScheme.surfaceTint,
               ),
               Text(
                 'Pedido confirmado',
@@ -46,7 +44,7 @@ class _SuccessOrderState extends State<SuccessOrder> {
                   width: 72,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppColors.bg_4,
+                    color: Theme.of(context).colorScheme.surfaceTint,
                     borderRadius: BorderRadius.circular(48),
                   ),
                   child: Center(

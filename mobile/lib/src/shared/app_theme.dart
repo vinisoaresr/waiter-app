@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:waiter_app/src/shared/app_text_styles.dart';
 
+import 'app_colors.dart';
+
 class AppTheme {
   static final themeLight = ThemeData(
     useMaterial3: true,
@@ -13,19 +15,19 @@ class AppTheme {
   static const colorScheme = ColorScheme(
     brightness: Brightness.light,
     // primary
-    primary: Color(0xffd73035),
-    primaryContainer: Color(0xffd73035),
+    primary: AppColors.primary,
+    primaryContainer: AppColors.primary,
     onPrimary: Color(0xffFFFFFF),
     // secondary
-    secondary: Color(0xff8a1114),
-    secondaryContainer: Color(0xff8a1114),
+    secondary: AppColors.secondary,
+    secondaryContainer: AppColors.secondary,
     onSecondary: Color(0xffFFFFFF),
     // tertiary
-    tertiary: Color(0xffffabad),
-    tertiaryContainer: Color(0xffffabad),
+    tertiary: AppColors.tertiary,
+    tertiaryContainer: AppColors.tertiary,
     onTertiary: Color(0xff000000),
     // error
-    error: Color(0xFFBA1A1A),
+    error: AppColors.error,
     onError: Color(0xFFFFFFFF),
     // neutral
     background: Color(0xFFFFFFFF),
@@ -34,7 +36,7 @@ class AppTheme {
     onSurface: Color(0xFF000000),
 
     // background card
-    surfaceTint: Color(0xFFFAFAFA),
+    surfaceTint: AppColors.surfaceTint,
   );
 
   static final _inputDecorationTheme = InputDecorationTheme(

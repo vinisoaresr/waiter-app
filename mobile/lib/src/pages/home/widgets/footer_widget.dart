@@ -118,9 +118,9 @@ class Footer extends StatelessWidget {
                               onTap: () {
                                 state.addProduct(state.getProducts[index]);
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add_circle_outline,
-                                color: AppColors.red,
+                                color: Theme.of(context).primaryColor,
                                 size: 24,
                               ),
                             ),
@@ -128,9 +128,9 @@ class Footer extends StatelessWidget {
                               onTap: () {
                                 state.removeProduct(state.getProducts[index]);
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.remove_circle_outline,
-                                color: AppColors.red,
+                                color: Theme.of(context).primaryColor,
                                 size: 24,
                               ),
                             ),
