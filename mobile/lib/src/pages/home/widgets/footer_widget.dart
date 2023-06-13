@@ -3,8 +3,6 @@ import 'package:intl/intl.dart';
 
 import '../../../providers/order_context.dart';
 import '../../../shared/app_colors.dart';
-import '../../../shared/app_text_styles.dart';
-import '../../../widgets/button.dart';
 import '../../../widgets/confirm_modal_widget.dart';
 
 enum FooterType { waiting, withoutOrder, withOrder }
@@ -24,23 +22,20 @@ class Footer extends StatelessWidget {
 
   Widget waitingFooter(BuildContext context) {
     return Container(
-      height: 76,
-      margin: const EdgeInsets.only(bottom: 24),
-      child: Container(
-        padding:
-            const EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
-        child: Button(
-          text: 'Novo Pedido',
-          callback: () {
-            showSimpleModalDialog(context);
-          },
-        ),
+      width: double.infinity,
+      height: 96,
+      padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 24),
+      child: FilledButton(
+        onPressed: () {
+          showSimpleModalDialog(context);
+        },
+        child: const Text('Novo Pedido'),
       ),
     );
   }
 
   Widget withOrderFooter(BuildContext context) {
-    final state = OrderProvider.of(context);
+    final state = OrderState.of(context);
     final products = state.getProducts;
     final total = products.fold<double>(
         0, (previousValue, element) => previousValue + element.price);
@@ -88,7 +83,7 @@ class Footer extends StatelessWidget {
                             ),
                             Text(
                               '${state.getProducts[index].quantity.toString()}x',
-                              style: AppTextStyles.body2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Container(
                               margin: const EdgeInsets.only(left: 20),
@@ -99,11 +94,13 @@ class Footer extends StatelessWidget {
                                 children: [
                                   Text(
                                     state.getProducts[index].name.toString(),
-                                    style: AppTextStyles.body2,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                   ),
                                   Text(
                                     intl.format(state.getProducts[index].price),
-                                    style: AppTextStyles.h6,
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                 ],
                               ),
@@ -159,16 +156,16 @@ class Footer extends StatelessWidget {
                       const Text("Total"),
                       Text(
                         intl.format(total),
-                        style: AppTextStyles.h6,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20, bottom: 16),
-                  child: Button(
-                    text: 'Confirmar pedido',
-                    callback: () {
+                  child: FilledButton(
+                    child: const Text('Confirmar pedido'),
+                    onPressed: () {
                       Navigator.of(context).pushNamed('/success');
                       // show confirm splash screen, send order and reset all states
                     },
@@ -194,18 +191,18 @@ class Footer extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(top: 16, bottom: 50),
-            child: const Text(
+            child: Text(
               'Seu carrinho \n está vazio',
               textAlign: TextAlign.justify,
-              style: AppTextStyles.body2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 50),
-            child: Button(
-              disabled: true,
-              text: 'Confirmar pedido',
-              callback: () {
+            child: FilledButton(
+              // disabled: true,
+              child: const Text('Confirmar pedido'),
+              onPressed: () {
                 showSimpleModalDialog(context);
               },
             ),

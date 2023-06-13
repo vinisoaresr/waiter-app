@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:waiter_app/src/models/product.dart';
 import 'package:waiter_app/src/providers/order_context.dart';
 import 'package:waiter_app/src/shared/app_colors.dart';
-import 'package:waiter_app/src/shared/app_text_styles.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({
@@ -16,7 +15,7 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = OrderProvider.of(context);
+    final state = OrderState.of(context);
 
     return Expanded(
       child: Container(
@@ -63,11 +62,11 @@ class MenuWidget extends StatelessWidget {
                               children: [
                                 Text(
                                   products[index].name.toString(),
-                                  style: AppTextStyles.h6,
+                                  style: Theme.of(context).textTheme.titleSmall,
                                 ),
                                 Text(
                                   products[index].description.toString(),
-                                  style: AppTextStyles.body2,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -75,7 +74,9 @@ class MenuWidget extends StatelessWidget {
                                   children: [
                                     Text(
                                       intl.format(products[index].price),
-                                      style: AppTextStyles.h6,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
                                     ),
                                     GestureDetector(
                                       onTap: () {

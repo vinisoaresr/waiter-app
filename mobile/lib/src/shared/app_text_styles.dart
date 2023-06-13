@@ -2,73 +2,100 @@ import 'package:flutter/material.dart';
 import 'package:waiter_app/src/shared/app_colors.dart';
 
 class AppTextStyles {
-  static const title = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w700,
+  // Display
+  static const TextStyle displayLarge = TextStyle(
+    fontSize: 64,
+    fontWeight: FontWeight.w600,
     height: 1.2,
-    color: AppColors.bg_1,
   );
 
-  static const display = TextStyle(
+  static const TextStyle displayMedium = TextStyle(
     fontSize: 56,
     fontWeight: FontWeight.w600,
     height: 1.2,
   );
 
-  static const TextStyle h1 = TextStyle(
+  static const TextStyle displaySmall = TextStyle(
     fontSize: 48,
     fontWeight: FontWeight.w600,
     height: 1.2,
   );
 
-  static const TextStyle h2 = TextStyle(
+  // Headline
+  static const TextStyle headlineLarge = TextStyle(
+    fontSize: 48,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+  );
+
+  static const TextStyle headlineMedium = TextStyle(
     fontSize: 40,
     fontWeight: FontWeight.w600,
     height: 1.2,
   );
 
-  static const TextStyle h3 = TextStyle(
+  static const TextStyle headlineSmall = TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.w600,
     height: 1.2,
   );
 
-  static const TextStyle h4 = TextStyle(
+  // Title
+  static const TextStyle titleLarge = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w600,
     height: 1.2,
-    color: AppColors.bg_4,
   );
 
-  static const TextStyle h5 = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w400,
+  static const TextStyle titleMedium = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
     height: 1.2,
-    color: AppColors.bg_1,
   );
 
-  static const TextStyle h6 = TextStyle(
+  static const TextStyle titleSmall = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
     height: 1.2,
   );
 
-  static const TextStyle body1 = TextStyle(
+  // Body
+  static const TextStyle bodyLarge = TextStyle(
     fontSize: 18,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w400,
     height: 1.5,
-    color: AppColors.red,
   );
 
-  static const TextStyle body2 = TextStyle(
+  static const TextStyle bodyMedium = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+  );
+
+  static const TextStyle bodySmall = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     height: 1.5,
   );
 
-  static const TextStyle body3 = TextStyle(
+  // Label
+  static const TextStyle labelLarge = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.white_2,
+    height: 1.2,
+    color: AppColors.bg_4,
+  );
+
+  static const TextStyle labelMedium = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 1.2,
+    color: AppColors.bg_1,
+  );
+
+  static const TextStyle labelSmall = TextStyle(
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    height: 1.2,
   );
 }

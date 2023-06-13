@@ -64,7 +64,7 @@ class OrderState extends InheritedWidget {
 class OrderProvider extends StatefulWidget {
   const OrderProvider({super.key, required this.child});
 
-  final Widget Function(BuildContext context, OrderState orderState) child;
+  final Widget child;
 
   @override
   State<OrderProvider> createState() => _OrderProviderState();

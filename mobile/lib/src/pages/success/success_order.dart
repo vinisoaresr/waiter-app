@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:waiter_app/src/providers/order_context.dart';
 
 import 'package:waiter_app/src/shared/app_colors.dart';
-import 'package:waiter_app/src/shared/app_text_styles.dart';
 
 class SuccessOrder extends StatefulWidget {
   const SuccessOrder({super.key});
@@ -14,7 +13,7 @@ class SuccessOrder extends StatefulWidget {
 class _SuccessOrderState extends State<SuccessOrder> {
   @override
   Widget build(BuildContext context) {
-    final state = OrderProvider.of(context);
+    final state = OrderState.of(context);
     final products = state.products;
 
     return Scaffold(
@@ -30,13 +29,13 @@ class _SuccessOrderState extends State<SuccessOrder> {
                 size: 20,
                 color: AppColors.bg_4,
               ),
-              const Text(
+              Text(
                 'Pedido confirmado',
-                style: AppTextStyles.h4,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              const Text(
+              Text(
                 'O pedido já entrou na fila de produção!',
-                style: AppTextStyles.body3,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               GestureDetector(
                 onTap: () {
@@ -50,10 +49,10 @@ class _SuccessOrderState extends State<SuccessOrder> {
                     color: AppColors.bg_4,
                     borderRadius: BorderRadius.circular(48),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       'OK',
-                      style: AppTextStyles.body1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ),

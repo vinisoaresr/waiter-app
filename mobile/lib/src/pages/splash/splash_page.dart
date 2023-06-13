@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:waiter_app/src/widgets/button.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -45,9 +44,9 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
             const SizedBox(height: 24),
-            Button(
-              text: 'Iniciar',
-              callback: () {
+            FilledButton(
+              child: const Text('Iniciar'),
+              onPressed: () {
                 Navigator.pushNamed(context, '/home');
               },
             ),

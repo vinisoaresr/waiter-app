@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final state = OrderProvider.of(context);
+    final state = OrderState.of(context);
     final tableNumber = state.tableNumber;
     final currentFooter = state.currentFooter;
     log('build called on home_page.dart');

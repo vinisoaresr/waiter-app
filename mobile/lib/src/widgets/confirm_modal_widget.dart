@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:waiter_app/src/shared/app_colors.dart';
-import 'package:waiter_app/src/widgets/button.dart';
 
 import '../providers/order_context.dart';
 
 showSimpleModalDialog(BuildContext context) {
-  final state = OrderProvider.of(context);
+  final state = OrderState.of(context);
   final tableValueNotifier = state.tableNumber;
   final TextEditingController value = TextEditingController();
 
@@ -15,6 +13,7 @@ showSimpleModalDialog(BuildContext context) {
         return Dialog(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.all(8),
             width: double.infinity,
             height: 250,
             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -22,55 +21,41 @@ showSimpleModalDialog(BuildContext context) {
               borderRadius: BorderRadius.circular(24.0),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(right: 32, top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Informe a mesa'),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(Icons.close),
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Informe a mesa'),
+                    IconButton(
+                      onPressed: () {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 44.5),
-                  // clipBehavior: Clip.antiAliasWithSaveLayer,
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(24.0),
-                  // ),
+                  margin: const EdgeInsets.symmetric(vertical: 16),
                   child: TextField(
                     controller: value,
                     autofocus: true,
                     decoration: const InputDecoration(
                       hintText: 'Número da mesa',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.bg_4,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.bg_4,
-                        ),
-                      ),
                     ),
-                    showCursor: false,
-                    maxLength: 99,
+                    maxLength: 8,
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 24.0),
-                  child: Button(
-                    text: 'Salvar',
-                    callback: () {
+                SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: FilledButton(
+                    child: const Text('Salvar'),
+                    onPressed: () {
                       tableValueNotifier.value = int.parse(value.text);
-
                       Navigator.pop(context);
                     },
                   ),

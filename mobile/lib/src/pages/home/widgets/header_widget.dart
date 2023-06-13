@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waiter_app/src/providers/order_context.dart';
 import 'package:waiter_app/src/shared/app_colors.dart';
-import 'package:waiter_app/src/shared/app_text_styles.dart';
 
 class Header extends StatelessWidget {
   final int tableNumber;
@@ -15,25 +14,26 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: tableNumber > 0 ? withOrderHeader(context) : defaultHeader(),
+        children:
+            tableNumber > 0 ? withOrderHeader(context) : defaultHeader(context),
       ),
     );
   }
 
-  List<Widget> defaultHeader() {
+  List<Widget> defaultHeader(context) {
     return [
-      const Text(
+      Text(
         'Bem vindo(a) ao',
-        style: AppTextStyles.body2,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
-      const Text.rich(
+      Text.rich(
         TextSpan(
           text: 'WAITER',
-          style: AppTextStyles.title,
+          style: Theme.of(context).textTheme.titleMedium,
           children: [
             TextSpan(
               text: 'APP',
-              style: AppTextStyles.h5,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ],
         ),
@@ -42,7 +42,7 @@ class Header extends StatelessWidget {
   }
 
   List<Widget> withOrderHeader(BuildContext context) {
-    final state = OrderProvider.of(context);
+    final state = OrderState.of(context);
     final tableValueNotifier = state.tableNumber;
 
     return [
@@ -51,19 +51,18 @@ class Header extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Pedido',
-              style: AppTextStyles.h4,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            GestureDetector(
-              onTap: () {
-                // delete all order items
-                OrderProvider.of(context).getProducts.clear();
+            TextButton(
+              onPressed: () {
+                OrderState.of(context).getProducts.clear();
                 tableValueNotifier.value = 0;
               },
-              child: const Text(
+              child: Text(
                 "cancelar pedido",
-                style: AppTextStyles.body1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ],
@@ -83,7 +82,7 @@ class Header extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Text(
           'Mesa ${tableValueNotifier.value}',
-          style: AppTextStyles.body2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       )
     ];
