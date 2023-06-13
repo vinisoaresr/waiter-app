@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:waiter_app/src/providers/order_context.dart';
+import 'package:provider/provider.dart';
+import 'package:waiter_app/src/pages/home/home_page_view_model.dart';
 
 class SuccessOrder extends StatefulWidget {
   const SuccessOrder({super.key});
@@ -11,8 +12,8 @@ class SuccessOrder extends StatefulWidget {
 class _SuccessOrderState extends State<SuccessOrder> {
   @override
   Widget build(BuildContext context) {
-    final state = OrderState.of(context);
-    final products = state.products;
+    final viewModel = context.watch<HomePageViewModel>();
+    final products = viewModel.getProducts;
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:waiter_app/src/providers/order_context.dart';
+import 'package:provider/provider.dart';
 import 'package:waiter_app/src/shared/app_colors.dart';
+
+import '../home_page_view_model.dart';
 
 class Header extends StatelessWidget {
   final int tableNumber;
@@ -42,8 +44,9 @@ class Header extends StatelessWidget {
   }
 
   List<Widget> withOrderHeader(BuildContext context) {
-    final state = OrderState.of(context);
-    final tableValueNotifier = state.tableNumber;
+    final viewModel = context.watch<HomePageViewModel>();
+    final products = viewModel.getProducts;
+    final tableValueNotifier = viewModel.tableNumber;
 
     return [
       SizedBox(
@@ -57,7 +60,7 @@ class Header extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                OrderState.of(context).getProducts.clear();
+                products.clear();
                 tableValueNotifier.value = 0;
               },
               child: Text(

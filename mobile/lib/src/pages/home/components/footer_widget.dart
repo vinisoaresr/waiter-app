@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../../providers/order_context.dart';
+import 'package:provider/provider.dart';
 import '../../../shared/app_colors.dart';
 import '../../../widgets/confirm_modal_widget.dart';
+import '../home_page_view_model.dart';
 
 enum FooterType { waiting, withoutOrder, withOrder }
 
@@ -13,6 +13,16 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // switch (currentFooter) {
+    //   case FooterType.waiting:
+    //     return waitingFooter(context);
+    //   case FooterType.withOrder:
+    //     return withOrderFooter(context);
+    //   case FooterType.withoutOrder:
+    //     return withoutOrderFooter(context);
+    //   default:
+    //     return waitingFooter(context);
+    // }
     return currentFooter == FooterType.waiting
         ? waitingFooter(context)
         : currentFooter == FooterType.withOrder
@@ -35,8 +45,8 @@ class Footer extends StatelessWidget {
   }
 
   Widget withOrderFooter(BuildContext context) {
-    final state = OrderState.of(context);
-    final products = state.getProducts;
+    final viewModel = context.watch<HomePageViewModel>();
+    final products = viewModel.getProducts;
     final total = products.fold<double>(
         0, (previousValue, element) => previousValue + element.price);
     final intl = NumberFormat.currency(
@@ -55,7 +65,7 @@ class Footer extends StatelessWidget {
           SizedBox(
             height: 62,
             child: ListView.builder(
-              itemCount: state.getProducts.length,
+              itemCount: viewModel.getProducts.length,
               itemBuilder: ((context, index) {
                 return Container(
                   height: 62,
@@ -77,12 +87,12 @@ class Footer extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Image.asset(
-                                'assets/images/${state.getProducts[index].imagePath}',
+                                'assets/images/${viewModel.getProducts[index].imagePath}',
                                 fit: BoxFit.cover,
                               ),
                             ),
                             Text(
-                              '${state.getProducts[index].quantity.toString()}x',
+                              '${viewModel.getProducts[index].quantity.toString()}x',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Container(
@@ -93,12 +103,14 @@ class Footer extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.getProducts[index].name.toString(),
+                                    viewModel.getProducts[index].name
+                                        .toString(),
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                   ),
                                   Text(
-                                    intl.format(state.getProducts[index].price),
+                                    intl.format(
+                                        viewModel.getProducts[index].price),
                                     style:
                                         Theme.of(context).textTheme.titleSmall,
                                   ),
@@ -116,7 +128,8 @@ class Footer extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                state.addProduct(state.getProducts[index]);
+                                viewModel
+                                    .addProduct(viewModel.getProducts[index]);
                               },
                               child: Icon(
                                 Icons.add_circle_outline,
@@ -126,7 +139,8 @@ class Footer extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                state.removeProduct(state.getProducts[index]);
+                                viewModel.removeProduct(
+                                    viewModel.getProducts[index]);
                               },
                               child: Icon(
                                 Icons.remove_circle_outline,
@@ -167,7 +181,7 @@ class Footer extends StatelessWidget {
                     child: const Text('Confirmar pedido'),
                     onPressed: () {
                       Navigator.of(context).pushNamed('/success');
-                      // show confirm splash screen, send order and reset all states
+                      // show confirm splash screen, send order and reset all viewModels
                     },
                   ),
                 ),

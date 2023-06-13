@@ -1,9 +1,11 @@
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:waiter_app/src/models/product.dart';
-import 'package:waiter_app/src/providers/order_context.dart';
 import 'package:waiter_app/src/shared/app_colors.dart';
+
+import '../home_page_view_model.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({
@@ -15,7 +17,7 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = OrderState.of(context);
+    final viewModel = context.watch<HomePageViewModel>();
 
     return Expanded(
       child: Container(
@@ -80,7 +82,7 @@ class MenuWidget extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        state.addProduct(products[index]);
+                                        viewModel.addProduct(products[index]);
                                       },
                                       child: Icon(
                                         Icons.add_circle_outline,

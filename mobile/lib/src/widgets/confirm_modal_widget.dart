@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../providers/order_context.dart';
+import 'package:provider/provider.dart';
+import '../pages/home/home_page_view_model.dart';
 
 showSimpleModalDialog(BuildContext context) {
-  final state = OrderState.of(context);
-  final tableValueNotifier = state.tableNumber;
+  final viewModel = context.read<HomePageViewModel>();
   final TextEditingController value = TextEditingController();
 
   showDialog(
@@ -55,8 +54,10 @@ showSimpleModalDialog(BuildContext context) {
                   child: FilledButton(
                     child: const Text('Salvar'),
                     onPressed: () {
-                      tableValueNotifier.value = int.parse(value.text);
-                      Navigator.pop(context);
+                      viewModel.setTableNumber(value.text);
+                      if (Navigator.canPop(context)) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 )

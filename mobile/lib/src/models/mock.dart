@@ -28,10 +28,11 @@ class Mock {
   static List<Product> products = [
     Product(
       id: "1",
+      idCategory: 1,
       name: 'Pizza quatro queijos',
       description: 'Deliciosa pizza quatro queijos com borda simples',
       imagePath: 'quatro-queijos.png',
-      price: 40.0,
+      price: 54.69,
       ingredients: [
         Ingredient(
           id: "1",
@@ -57,18 +58,20 @@ class Mock {
     ),
     Product(
       id: "2",
+      idCategory: 2,
       name: 'Coca cola',
       description: 'Coca cola lata geladinha topzera',
       imagePath: 'coca-cola.png',
-      price: 7,
+      price: 5.99,
       ingredients: [],
     ),
     Product(
       id: "3",
+      idCategory: 2,
       name: 'Brigadeiro',
       description: 'Brigadeiro de caneca ',
-      imagePath: 'coca-cola.png',
-      price: 7.99,
+      imagePath: 'brigadeiro.jpeg',
+      price: 12.99,
       ingredients: [],
     )
   ];

@@ -1,13 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:waiter_app/src/models/mock.dart';
-import 'package:waiter_app/src/pages/home/widgets/categories_widget.dart';
-import 'package:waiter_app/src/pages/home/widgets/footer_widget.dart';
-import 'package:waiter_app/src/pages/home/widgets/header_widget.dart';
-import 'package:waiter_app/src/pages/home/widgets/menu_widget.dart';
-import 'package:waiter_app/src/providers/order_context.dart';
+import './components/components.dart';
+
+import 'home_page_view_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,9 +18,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final state = OrderState.of(context);
-    final tableNumber = state.tableNumber;
-    final currentFooter = state.currentFooter;
+    final viewModel = context.watch<HomePageViewModel>();
+    final tableNumber = viewModel.tableNumber;
+    final currentFooter = viewModel.currentFooter;
     log('build called on home_page.dart');
 
     return Scaffold(
