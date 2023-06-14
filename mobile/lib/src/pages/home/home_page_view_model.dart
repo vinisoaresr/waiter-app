@@ -4,14 +4,26 @@ import './components/components.dart';
 import '../../models/models.dart';
 
 class HomePageViewModel extends ChangeNotifier {
-  final tableNumber = ValueNotifier<int>(0);
-  final currentFooter = ValueNotifier<FooterType>(FooterType.waiting);
-  final List<Product> _products = [];
+  final _showModal = ValueNotifier<bool>(false);
+  final _tableNumber = ValueNotifier<int>(0);
+  final _currentFooter = ValueNotifier<FooterType>(FooterType.waiting);
+  final _products = <Product>[];
 
-  get getCurrentFooter => currentFooter;
+  bool get showModal => _showModal.value;
+  ValueNotifier<FooterType> get currentFooter => _currentFooter;
+  ValueNotifier<int> get tableNumber => _tableNumber;
   List<Product> get getProducts => _products;
 
+  showModalInfoTable() {
+    _showModal.value = true;
+    notifyListeners();
+  }
+
   addProduct(product) {
+    if (tableNumber.value == 0) {
+      _showModal.value = true;
+    }
+
     if (_products.contains(product)) {
       final index = _products.indexOf(product);
 
@@ -34,11 +46,11 @@ class HomePageViewModel extends ChangeNotifier {
         _products[index].quantity -= 1;
       } else {
         _products.removeAt(index);
-        currentFooter.value;
+        _currentFooter.value;
       }
     } else {
       _products.remove(product);
-      currentFooter.value = FooterType.withoutOrder;
+      _currentFooter.value = FooterType.withoutOrder;
     }
 
     refreshFooterState();
@@ -47,17 +59,19 @@ class HomePageViewModel extends ChangeNotifier {
   }
 
   void refreshFooterState() {
-    if (_products.isNotEmpty && tableNumber.value > 0) {
-      currentFooter.value = FooterType.withOrder;
-    } else if (_products.isEmpty && tableNumber.value > 0) {
-      currentFooter.value = FooterType.withoutOrder;
+    if (_products.isNotEmpty && _tableNumber.value > 0) {
+      _currentFooter.value = FooterType.withOrder;
+    } else if (_products.isEmpty && _tableNumber.value > 0) {
+      _currentFooter.value = FooterType.withoutOrder;
     } else {
-      currentFooter.value = FooterType.waiting;
+      _currentFooter.value = FooterType.waiting;
     }
   }
 
   void setTableNumber(String value) {
-    tableNumber.value = int.tryParse(value) ?? 0;
+    _showModal.value = false;
+
+    _tableNumber.value = int.tryParse(value) ?? 0;
 
     refreshFooterState();
 

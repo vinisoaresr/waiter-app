@@ -73,6 +73,15 @@ class Mock {
       imagePath: 'brigadeiro.jpeg',
       price: 12.99,
       ingredients: [],
-    )
+    ),
+    Product(
+      id: "3",
+      idCategory: 3,
+      name: 'Coca cola 2L',
+      description: 'Coca cola garrafa 2L',
+      imagePath: 'coca-cola.png',
+      price: 11.59,
+      ingredients: [],
+    ),
   ];
 }

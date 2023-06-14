@@ -15,7 +15,7 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (currentFooter) {
       case FooterType.waiting:
-        return waitingFooter(context);
+        return Container();
       case FooterType.withOrder:
         return withOrderFooter(context);
       case FooterType.withoutOrder:

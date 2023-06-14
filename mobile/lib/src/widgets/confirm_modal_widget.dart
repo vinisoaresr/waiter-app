@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../pages/home/home_page_view_model.dart';
 
 showSimpleModalDialog(BuildContext context) {
+  final theme = Theme.of(context);
   final viewModel = context.read<HomePageViewModel>();
   final TextEditingController value = TextEditingController();
 
@@ -41,8 +42,11 @@ showSimpleModalDialog(BuildContext context) {
                   child: TextField(
                     controller: value,
                     autofocus: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Número da mesa',
+                      hintStyle: theme.textTheme.bodySmall!.copyWith(
+                        color: theme.colorScheme.onBackground.withOpacity(0.5),
+                      ),
                     ),
                     maxLength: 8,
                     keyboardType: TextInputType.number,
