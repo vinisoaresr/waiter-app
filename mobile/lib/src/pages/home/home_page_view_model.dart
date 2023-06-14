@@ -12,8 +12,6 @@ class HomePageViewModel extends ChangeNotifier {
   List<Product> get getProducts => _products;
 
   addProduct(product) {
-    currentFooter.value = FooterType.withOrder;
-
     if (_products.contains(product)) {
       final index = _products.indexOf(product);
 
@@ -21,6 +19,9 @@ class HomePageViewModel extends ChangeNotifier {
     } else {
       _products.add(product);
     }
+
+    refreshFooterState();
+
     notifyListeners();
   }
 
@@ -40,21 +41,46 @@ class HomePageViewModel extends ChangeNotifier {
       currentFooter.value = FooterType.withoutOrder;
     }
 
-    if (_products.isEmpty) {
-      currentFooter.value = FooterType.waiting;
-    }
+    refreshFooterState();
 
     notifyListeners();
+  }
+
+  void refreshFooterState() {
+    if (_products.isNotEmpty && tableNumber.value > 0) {
+      currentFooter.value = FooterType.withOrder;
+    } else if (_products.isEmpty && tableNumber.value > 0) {
+      currentFooter.value = FooterType.withoutOrder;
+    } else {
+      currentFooter.value = FooterType.waiting;
+    }
   }
 
   void setTableNumber(String value) {
     tableNumber.value = int.tryParse(value) ?? 0;
+
+    refreshFooterState();
+
     notifyListeners();
   }
 
-  void setCurrentFooter(String value) {
-    currentFooter.value =
-        FooterType.values.firstWhere((element) => element.toString() == value);
+  void cancelOrder() {
+    _products.clear();
+
+    setTableNumber('0');
+
+    refreshFooterState();
+
+    notifyListeners();
+  }
+
+  void reset() {
+    _products.clear();
+
+    setTableNumber('0');
+
+    refreshFooterState();
+
     notifyListeners();
   }
 }

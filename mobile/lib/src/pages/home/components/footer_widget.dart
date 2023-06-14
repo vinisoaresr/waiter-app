@@ -13,21 +13,16 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // switch (currentFooter) {
-    //   case FooterType.waiting:
-    //     return waitingFooter(context);
-    //   case FooterType.withOrder:
-    //     return withOrderFooter(context);
-    //   case FooterType.withoutOrder:
-    //     return withoutOrderFooter(context);
-    //   default:
-    //     return waitingFooter(context);
-    // }
-    return currentFooter == FooterType.waiting
-        ? waitingFooter(context)
-        : currentFooter == FooterType.withOrder
-            ? withOrderFooter(context)
-            : withoutOrderFooter(context);
+    switch (currentFooter) {
+      case FooterType.waiting:
+        return waitingFooter(context);
+      case FooterType.withOrder:
+        return withOrderFooter(context);
+      case FooterType.withoutOrder:
+        return withoutOrderFooter(context);
+      default:
+        return waitingFooter(context);
+    }
   }
 
   Widget waitingFooter(BuildContext context) {
@@ -213,12 +208,9 @@ class Footer extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 50),
-            child: FilledButton(
-              // disabled: true,
-              child: const Text('Confirmar pedido'),
-              onPressed: () {
-                showSimpleModalDialog(context);
-              },
+            child: const FilledButton(
+              onPressed: null,
+              child: Text('Confirmar pedido'),
             ),
           ),
         ],

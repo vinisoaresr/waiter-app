@@ -11,12 +11,22 @@ class SuccessOrder extends StatefulWidget {
 
 class _SuccessOrderState extends State<SuccessOrder> {
   @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      context.read<HomePageViewModel>().reset();
+
+      Navigator.of(context).pop();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<HomePageViewModel>();
-    final products = viewModel.getProducts;
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: theme.primaryColor,
       body: Center(
         child: SizedBox(
           height: 150,
@@ -26,34 +36,18 @@ class _SuccessOrderState extends State<SuccessOrder> {
               Icon(
                 Icons.check_circle_outline,
                 size: 20,
-                color: Theme.of(context).colorScheme.surfaceTint,
+                color: theme.colorScheme.onPrimary,
               ),
               Text(
                 'Pedido confirmado',
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: theme.textTheme.headlineSmall!.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                ),
               ),
               Text(
                 'O pedido já entrou na fila de produção!',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              GestureDetector(
-                onTap: () {
-                  products.clear();
-                  Navigator.pushNamed(context, '/home');
-                },
-                child: Container(
-                  width: 72,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceTint,
-                    borderRadius: BorderRadius.circular(48),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'OK',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
+                style: theme.textTheme.bodySmall!.copyWith(
+                  color: theme.colorScheme.onPrimary,
                 ),
               ),
             ],

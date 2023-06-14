@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:waiter_app/src/shared/app_colors.dart';
 
+import '../../../shared/app_colors.dart';
 import '../home_page_view_model.dart';
 
 class Header extends StatelessWidget {
@@ -11,13 +11,14 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasTable = tableNumber > 0;
+
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:
-            tableNumber > 0 ? withOrderHeader(context) : defaultHeader(context),
+        children: hasTable ? withOrderHeader(context) : defaultHeader(context),
       ),
     );
   }
@@ -30,12 +31,14 @@ class Header extends StatelessWidget {
       ),
       Text.rich(
         TextSpan(
-          text: 'WAITER',
-          style: Theme.of(context).textTheme.titleMedium,
           children: [
             TextSpan(
+              text: 'WAITER',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            TextSpan(
               text: 'APP',
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
         ),
@@ -45,31 +48,30 @@ class Header extends StatelessWidget {
 
   List<Widget> withOrderHeader(BuildContext context) {
     final viewModel = context.watch<HomePageViewModel>();
-    final products = viewModel.getProducts;
     final tableValueNotifier = viewModel.tableNumber;
+    final theme = Theme.of(context);
 
     return [
-      SizedBox(
-        height: 24,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Pedido',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            TextButton(
-              onPressed: () {
-                products.clear();
-                tableValueNotifier.value = 0;
-              },
-              child: Text(
-                "cancelar pedido",
-                style: Theme.of(context).textTheme.bodyLarge,
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Pedido',
+            style: theme.textTheme.titleLarge,
+          ),
+          TextButton(
+            onPressed: () {
+              viewModel.cancelOrder();
+            },
+            child: Text(
+              "cancelar pedido",
+              style: theme.textTheme.titleSmall!.copyWith(
+                color: theme.colorScheme.primary,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       Container(
         width: double.infinity,
@@ -85,7 +87,7 @@ class Header extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Text(
           'Mesa ${tableValueNotifier.value}',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium,
         ),
       )
     ];
